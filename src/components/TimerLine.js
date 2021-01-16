@@ -43,13 +43,18 @@ class TimerLine extends Component {
     }
 
     setStatePause = () => {
-        if (this.props.onTimeStart !== undefined && !this.state.timerRun) {
-            this.props.onTimeStart();
+        if (this.state.timerSec === 0) {
+            setTimeout(() => this.setState({ timerSec: this.state.timerSecFirst }), 1000);
         }
-        if (this.props.onTimePause !== undefined && this.state.timerRun) {
-            this.props.onTimePause();
+        else {
+            if (this.props.onTimeStart !== undefined && !this.state.timerRun) {
+                this.props.onTimeStart();
+            }
+            if (this.props.onTimePause !== undefined && this.state.timerRun) {
+                this.props.onTimePause();
+            }
+            this.setState({ timerRun: !this.state.timerRun, timerName: this.state.timerName === "Start" ? "Pause" : "Start" });
         }
-        this.setState({ timerRun: !this.state.timerRun, timerName: this.state.timerName === "Start" ? "Pause" : "Start" });
     }
 
     updateLine = (sec) => {
